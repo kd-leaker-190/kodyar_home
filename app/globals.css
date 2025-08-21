@@ -1,1 +1,5 @@
 @import "tailwindcss";
+
+:root {
+    --toastify-font-family: Vazirmatn, sans-serif;
+}
