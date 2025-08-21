@@ -6,6 +6,7 @@ import { useActionState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "nextjs-toploader/app";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { useAuth } from "@/context/AuthContext";
 
 export default function LoginForm() {
     const router = useRouter();
@@ -14,13 +15,16 @@ export default function LoginForm() {
         message: "",
     });
 
+    const { loginContext } = useAuth();
+
     useEffect(() => {
         if (state.status) {
             toast(state.message, { type: `${state?.status as "success" | "error"}` });
         }
 
         if (state.status === "success") {
-            router.push("/");
+            loginContext(state.user);
+            router.push("/profile");
         }
     }, [state]);
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
 import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
@@ -7,6 +8,7 @@ import { FiMenu, FiX } from "react-icons/fi";
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+    const { user } = useAuth();
 
     return (
         <>
@@ -36,19 +38,32 @@ export default function Navbar() {
 
                 {/* دکمه‌های ورود/ثبت نام */}
                 <div className="hidden md:flex space-x-2 z-50">
-                    <Link
-                        href="/auth/register"
-                        className="bg-indigo-600 hover:bg-indigo-500 transition text-white px-5 py-1 rounded-md"
-                    >
-                        ثبت نام
-                    </Link>
+                    {user ? (
+                        <>
+                            <Link
+                                href="/auth/register"
+                                className="bg-indigo-600 hover:bg-indigo-500 transition text-white px-5 py-1.5 rounded-md"
+                            >
+                                پنل کاربری
+                            </Link>
+                        </>
+                    ) : (
+                        <>
+                            <Link
+                                href="/auth/register"
+                                className="bg-indigo-600 hover:bg-indigo-500 transition text-white px-5 py-1.5 rounded-md"
+                            >
+                                ثبت نام
+                            </Link>
 
-                    <Link
-                        href="/auth/login"
-                        className="bg-white border border-indigo-600 hover:bg-indigo-600 hover:text-white transition text-black px-5 py-1 rounded-md"
-                    >
-                        ورود
-                    </Link>
+                            <Link
+                                href="/auth/login"
+                                className="bg-white border border-indigo-600 hover:bg-indigo-600 hover:text-white transition text-black px-5 py-1.5 rounded-md"
+                            >
+                                ورود
+                            </Link>
+                        </>
+                    )}
                 </div>
 
                 {/* دکمه موبایل */}

@@ -37,6 +37,7 @@ export const register = async (state: any, formData: FormData) => {
         return {
             status: data.status,
             message: data.message,
+            user: data.data.user,
         };
     } else {
         return {
@@ -77,11 +78,40 @@ export const login = async (state: any, formData: FormData) => {
         return {
             status: data.status,
             message: data.message,
+            user: data.data.user,
         };
     } else {
         return {
             status: data.status,
             message: handleError(data.message),
+        };
+    }
+};
+
+export const me = async () => {
+    const token = (await cookies()).get("token")?.value;
+
+    if (!token) {
+        return {
+            error: "UnAuthorized",
+        };
+    }
+
+    const data = await postFetch(
+        "/auth/me",
+        {},
+        {
+            Authorization: `Bearer ${token}`,
+        }
+    );
+
+    if (data.status === "success") {
+        return {
+            user: data.data,
+        };
+    } else {
+        return {
+            error: "User Forbidden",
         };
     }
 };
